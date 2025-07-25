@@ -1,28 +1,12 @@
-import React, { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
-import { Link } from "react-router-dom";
+import BlogList from "./BlogList";
 
-const Home = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios.get("/posts")
-      .then((res) => setPosts(res.data))
-      .catch(console.error);
-  }, []);
-
+function Home() {
   return (
-    <div className="p-4">
-      {posts.map((post) => (
-        <div key={post._id} className="p-4 border mb-2">
-          <Link to={`/blog/${post._id}`}>
-            <h2 className="text-xl font-bold">{post.title}</h2>
-            <div dangerouslySetInnerHTML={{ __html: post.content.substring(0, 100) + "..." }} />
-          </Link>
-        </div>
-      ))}
+    <div>
+      <h1 className="text-3xl font-bold text-center mt-6">Latest Blogs</h1>
+      <BlogList />
     </div>
   );
-};
+}
 
-export default Home;
+export default Home; 

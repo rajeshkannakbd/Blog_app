@@ -1,5 +1,34 @@
 const mongoose = require("mongoose");
 
+// ✅ Updated Comment Schema
+const commentSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    photo: {
+      type: String,
+      default: "",
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { _id: true }
+);
+
+// 📌 Post Schema
 const postschema = new mongoose.Schema(
   {
     title: {
@@ -11,7 +40,7 @@ const postschema = new mongoose.Schema(
       required: true,
     },
     tags: {
-      type: String, 
+      type: String,
       default: "",
     },
     author: {
@@ -20,12 +49,25 @@ const postschema = new mongoose.Schema(
     },
     visibility: {
       type: String,
-      enum: ["public", "private", "unlisted"], 
+      enum: ["public", "private", "unlisted"],
       default: "public",
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
+    comments: {
+      type: [commentSchema],
+      default: [],
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

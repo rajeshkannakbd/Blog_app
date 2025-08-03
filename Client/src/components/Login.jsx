@@ -1,64 +1,80 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { Link, useBlocker, useLocation, useNavigate } from "react-router-dom";
+import { authencationContext } from "../App";
 
 const Login = () => {
-  const[password,setPassword] = useState('')
-   const[email,setEmail] = useState('')
-   const [message,setmessage] = useState('')
-   const [loading,setLoading] = useState('')
-   const handleSubmit = async(e)=>{
-      e.preventDefault()
-      axios.post("http://localhost:8000/auth/login",{email:email,password:password})
-      .then((response)=>{console.log(response);alert("sucessfully logined")})
-      .catch(err=>console.log(err))
-   }
-   
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState([]);
+  const location = useLocation();
+  const from = location.state?.from || "/home";
+  const navigate = useNavigate();
+  const { isAuthenticated, setIsAuthenticated } =
+    useContext(authencationContext);
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios
+        .post("http://localhost:8000/auth/login", { email, password })
+        .then((data) => {
+          setUser(data.data.user);
+          setIsAuthenticated(true);
+          localStorage.setItem(
+            "user",
+            JSON.stringify(data.data.user)
+          );
+        });
+      if (user) {
+        navigate(from, { replace: true });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
-   <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-md">
-        <h2 className="text-8xl font-semibold text-center mb-6  text-gray-700">Login to Your Account</h2>
-
-        {message && (
-          <div className={`mb-4 text-center text-sm font-medium ${message.includes("success") ? "text-green-600" : "text-red-500"}`}>
-            {message}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600">Email</label>
+    <div className=" min-h-screen min-w-screen -mt-14 flex items-center justify-center">
+      <div className=" border-2 h-96 w-96">
+        <center>
+          <h1 className=" text-xl font-medium text-green-600 mt-4">Login</h1>
+        </center>
+        <form action="" onSubmit={handlesubmit}>
+          <div className=" flex flex-col mx-2 my-5 gap-4">
+            <label htmlFor="email" className="text-lg">
+              Email
+            </label>
             <input
-              type="email"
-              placeholder="Enter email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={email}
+              type="text"
               onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              placeholder=" Enter the Email"
+              className=" border-slate-500 border-2 outline-none rounded-md p-2"
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">Password</label>
+          <div className=" flex flex-col mx-2 my-5 gap-4">
+            <label htmlFor="password">Password</label>
             <input
-              type="password"
-              placeholder="Enter password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={password}
+              type="text"
               onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder=" Enter the Password"
+              className=" border-slate-500 border-2 outline-none rounded-md p-2"
             />
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 rounded-lg text-white font-semibold transition-colors ${
-              loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-        </div>
-        </div>      
+          <center>
+            <button
+              type="submit"
+              className=" bg-green-400 p-2 rounded-lg text-white w-32 text-lg font-semibold hover:text-slate-500"
+            >
+              Login
+            </button>
+          </center>
+          <center className=" mt-3 hover:text-green-400">
+            <Link to={"/register"}>Dont have An account ?</Link>
+          </center>
+        </form>{" "}
+      </div>
+    </div>
   );
 };
 

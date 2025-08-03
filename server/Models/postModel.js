@@ -11,21 +11,38 @@ const postschema = new mongoose.Schema(
       required: true,
     },
     tags: {
-      type: String, 
+      type: String,
+      default: "",
+    },
+    imageUrl: {
+      type: String,
       default: "",
     },
     author: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     visibility: {
       type: String,
-      enum: ["public", "private", "unlisted"], 
+      enum: ["public", "private", "unlisted"],
       default: "public",
     },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        defalut : []
+      }
+    ],
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

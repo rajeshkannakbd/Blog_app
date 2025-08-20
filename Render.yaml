@@ -26,3 +26,6 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://blog-app-server.onrender.com   # update with your backend URL
+        Source: /*
+Destination: /index.html
+Action: Rewrite

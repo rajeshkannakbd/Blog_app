@@ -9,7 +9,7 @@ const Blogcard = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("https://blog-app-server-kgb0.onrender.com/post/", {
+        const response = await axios.get("http://localhost:8000/post/", {
           headers: {
             "x-user-id": user?._id, // pass current user's ID here
           },
@@ -19,7 +19,6 @@ const Blogcard = () => {
         console.error("Failed to fetch blogs:", err);
       }
     };
-
     fetchBlogs();
   }, []);
 

@@ -1,0 +1,28 @@
+services:
+  # Backend API (Express + Node)
+  - type: web
+    name: blog-app-server
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false   # Add this in Render Dashboard
+      - key: JWT_SECRET
+        sync: false   # Add this in Render Dashboard
+
+  # Frontend (React + Vite or CRA)
+  - type: web
+    name: blog-app-client
+    env: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist   # use 'build' if CRA
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        value: https://blog-app-server.onrender.com   # update with your backend URL

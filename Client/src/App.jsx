@@ -16,14 +16,14 @@ import Search from "./components/Search";
 
 export const authencationContext = createContext();
 function App() {
- const storeduser = JSON.parse(localStorage.getItem("user"));
- const user_id = storeduser?._id;
- const [isAuthenticated, setIsAuthenticated] = useState(!!storeduser);
- const [search,setSearch] = useState("")
+  const storeduser = JSON.parse(localStorage.getItem("user"));
+  const user_id = storeduser?._id;
+  const [isAuthenticated, setIsAuthenticated] = useState(!!storeduser);
+  const [search, setSearch] = useState("");
   return (
     <>
       <authencationContext.Provider
-        value={{ isAuthenticated, setIsAuthenticated , search , setSearch }}
+        value={{ isAuthenticated, setIsAuthenticated, search, setSearch }}
       >
         <Routes>
           <Route element={<Layout />}>
@@ -31,12 +31,22 @@ function App() {
             <Route path="/head" element={<Header />} />
             <Route path="/blog" element={<Blogcard />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/history" element={<ProtectedRoute>
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
                   <HistoryBlog />
-                </ProtectedRoute>} />
-            <Route path="/edit/:id" element={<ProtectedRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit/:id"
+              element={
+                <ProtectedRoute>
                   <EditHistory />
-                </ProtectedRoute>} />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/create"
               element={
@@ -47,7 +57,7 @@ function App() {
             />
             <Route path="/blog/:id" element={<Singlepage />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/search" element={<Search/>}/>
+            <Route path="/search" element={<Search />} />
           </Route>
         </Routes>
       </authencationContext.Provider>

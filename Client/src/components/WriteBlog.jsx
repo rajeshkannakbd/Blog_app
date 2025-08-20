@@ -7,18 +7,52 @@ const WriteBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
-  const [author,setAuthor] = useState("");
+  const [description, setDescription] = useState("");
   const [visibility, setVisibility] = useState("public");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
- const storedUser = JSON.parse(localStorage.getItem("user"));
-const user_id = storedUser?._id;
-  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const user_id = storedUser?._id;
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
+
+const generateDescription = async () => {
+  setLoading(true);
+  setError(null);
+
+  try {
+    const response = await fetch("http://localhost:8000/new/generate-description", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, tags }),
+    });
+
+    const data = await response.json();
+
+    if (data.description) {
+      console.log("Generated description:", data.description);
+      setDescription(data.description);
+      setContent(data.description);
+    } else {
+      setError("No description returned.");
+    }
+  } catch (err) {
+    console.error(err);
+    setError("Failed to connect to backend.");
+  }
+
+  setLoading(false);
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +62,9 @@ const user_id = storedUser?._id;
     }
 
     try {
-      // Upload image to Cloudinary
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "blog_unsigned"); // replace with your preset
+      formData.append("upload_preset", "blog_unsigned");
 
       const res = await axios.post(
         "https://api.cloudinary.com/v1_1/dh9fmwhsk/image/upload",
@@ -40,12 +73,12 @@ const user_id = storedUser?._id;
 
       const imageUrl = res.data.secure_url;
 
-      // Send data to backend
       const blogData = {
         title,
         content,
         tags,
-        author : user_id,
+        description,
+        author: user_id,
         visibility,
         imageUrl,
       };
@@ -54,11 +87,10 @@ const user_id = storedUser?._id;
 
       alert("Blog posted successfully!");
 
-      // Reset form
       setTitle("");
       setContent("");
       setTags("");
-      setAuthor("");
+      setDescription("");
       setVisibility("public");
       setImage(null);
       setPreview("");
@@ -88,6 +120,23 @@ const user_id = storedUser?._id;
           onChange={(e) => setTags(e.target.value)}
           className="w-full p-2 border rounded"
         />
+
+        <button
+          type="button"
+          className="p-2 bg-blue-400 rounded-lg"
+          onClick={()=>generateDescription()}
+        >
+          {loading ? "Generating..." : "Generate Description"}
+        </button>
+
+        {/* {description && (
+          <textarea
+            className="w-full p-2 border rounded"
+            value={description}
+            readOnly
+          />
+        )} */}
+
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value)}
@@ -105,6 +154,7 @@ const user_id = storedUser?._id;
           onChange={handleImageChange}
           className="block mt-2"
         />
+
         {preview && (
           <img
             src={preview}

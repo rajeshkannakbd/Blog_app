@@ -3,6 +3,7 @@ const postModel = require("../Models/postModel");
 const { useParams } = require("react-router-dom");
 const router = express.Router();
 
+
 router.post("/newblog", async (req, res) => {
   try {
     const newpost = new postModel({...req.body});
@@ -142,6 +143,44 @@ router.post("/:id/unlike", async (req, res) => {
 
   res.json({ liked: false, likeCount: blog.likes.length });
 });
+
+// server/routes/openai.js
+const axios = require("axios");
+
+router.post('/generate-description', async (req, res) => {
+  const { title, tags } = req.body;
+
+  const prompt = `Write a concise, engaging blog description based on the title "${title}" and tags "${tags}".`;
+
+  try {
+    console.log("📝 Sending prompt to OpenAI:", prompt);
+
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 100,
+        temperature: 0.7,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+      }
+    );
+
+    console.log("✅ OpenAI response:", response);
+
+    const description = response.data.choices[0].message.content.trim();
+    res.json({ description });
+  } catch (error) {
+    console.error("❌ Error from OpenAI:", error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to generate description' });
+  }
+});
+
 
 
 

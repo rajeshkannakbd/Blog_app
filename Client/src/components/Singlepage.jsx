@@ -34,7 +34,7 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/post/${id}`);
+        const res = await axios.get(`https://blog-app-server-kgb0.onrender.com/post/${id}`);
         setBlog(res.data);
       } catch (err) {
         console.error("Error fetching blog:", err);

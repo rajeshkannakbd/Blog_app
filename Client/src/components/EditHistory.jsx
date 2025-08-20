@@ -16,7 +16,7 @@ const EditHistory = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/post/${id}`);
+        const res = await axios.get(`https://blog-app-server-kgb0.onrender.com/post/${id}`);
         const { title, content, tags, imageUrl, visibility, status } = res.data;
         setFormData({ title, content, tags, imageUrl, visibility, status });
       } catch (error) {
@@ -34,7 +34,7 @@ const EditHistory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/post/edit/${id}`, formData);
+      await axios.put(`https://blog-app-server-kgb0.onrender.com/post/edit/${id}`, formData);
       alert("Blog updated successfully");
       navigate("/history");
     } catch (error) {

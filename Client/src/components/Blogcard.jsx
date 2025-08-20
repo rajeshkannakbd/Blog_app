@@ -9,7 +9,7 @@ const Blogcard = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/post/", {
+        const response = await axios.get("https://blog-app-server-kgb0.onrender.com/post/", {
           headers: {
             "x-user-id": user?._id, // pass current user's ID here
           },
@@ -31,8 +31,8 @@ const Blogcard = () => {
     if (!blog) return;
 
     const url = blog.likedByUser
-      ? `http://localhost:8000/post/${id}/unlike`
-      : `http://localhost:8000/post/${id}/like`;
+      ? `https://blog-app-server-kgb0.onrender.com/post/${id}/unlike`
+      : `https://blog-app-server-kgb0.onrender.com/post/${id}/like`;
 
     try {
       const response = await axios.post(

@@ -12,7 +12,7 @@ const HistoryBlog = () => {
   useEffect(() => {
     const getblogs = async () => {
       await axios
-        .get(`http://localhost:8000/post/user/${user_id}/blogs`)
+        .get(`https://blog-app-server-kgb0.onrender.com/post/user/${user_id}/blogs`)
         .then((data) => setBlog(data.data))
         .catch((err) => console.log(err));
     };
@@ -20,7 +20,7 @@ const HistoryBlog = () => {
   }, []);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/post/delete/${id}`);
+      await axios.delete(`https://blog-app-server-kgb0.onrender.com/post/delete/${id}`);
       alert("blog deleted");
       setBlog((prevBlogs) => prevBlogs.filter((b) => b._id !== id));
     } catch (error) {

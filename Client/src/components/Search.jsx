@@ -12,7 +12,7 @@ const Search = () => {
   useEffect(() => {
     const searchblod = async () => {
       await axios
-        .get("http://localhost:8000/post/")
+        .get("https://blog-app-server-kgb0.onrender.com/post/")
         .then((data) => setBlog(data.data))
         .catch((err) => console.log(err));
     };

@@ -11,7 +11,7 @@ const Register = () => {
     e.preventDefault();
       try {
         const response = await axios.post(
-          "http://localhost:8000/auth/register",
+          "https://blog-app-server-kgb0.onrender.com/auth/register",
           {
             name,
             email,

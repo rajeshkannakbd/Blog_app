@@ -28,7 +28,7 @@ const generateDescription = async () => {
   setError(null);
 
   try {
-    const response = await fetch("http://localhost:8000/new/generate-description", {
+    const response = await fetch("https://blog-app-server-kgb0.onrender.com/new/generate-description", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ const generateDescription = async () => {
         imageUrl,
       };
 
-      await axios.post("http://localhost:8000/post/newblog", blogData);
+      await axios.post("https://blog-app-server-kgb0.onrender.com/post/newblog", blogData);
 
       alert("Blog posted successfully!");
 

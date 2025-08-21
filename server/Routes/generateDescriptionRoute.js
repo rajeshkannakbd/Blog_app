@@ -9,7 +9,9 @@ router.post("/generate-description", async (req, res) => {
     return res.status(400).json({ error: "Title and tags are required" });
   }
 
-  const prompt = `Write a concise, engaging blog description based on the title "${title}" and tags "${tags}".`;
+  const prompt = `Write a detailed, engaging, and SEO-friendly blog description of at least 120 words. 
+  The description should be based on the title "${title}" and the tags "${tags}". 
+  Make sure it flows naturally, provides context, and is suitable for a professional blog platform.`;
 
   try {
     const response = await axios.post(

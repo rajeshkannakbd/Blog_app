@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProductedRoute";
 import HistoryBlog from "./components/HistoryBlog";
 import EditHistory from "./components/EditHistory";
 import Search from "./components/Search";
+import About from "./components/About";
 
 export const authencationContext = createContext();
 function App() {
@@ -27,7 +28,7 @@ function App() {
       >
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/home" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/head" element={<Header />} />
             <Route path="/blog" element={<Blogcard />} />
             <Route path="/login" element={<Login />} />
@@ -58,6 +59,7 @@ function App() {
             <Route path="/blog/:id" element={<Singlepage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/about" element={<About/>} />
           </Route>
         </Routes>
       </authencationContext.Provider>

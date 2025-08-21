@@ -23,36 +23,33 @@ const WriteBlog = () => {
     setPreview(URL.createObjectURL(file));
   };
 
-const generateDescription = async () => {
-  setLoading(true);
-  setError(null);
+  const generateDescription = async () => {
+    setLoading(true);
+    setError(null);
 
-  try {
-    const response = await fetch("https://blog-app-server-kgb0.onrender.com/new/generate-description", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, tags }),
-    });
+    try {
+      const response = await fetch(
+        "https://blog-app-server-kgb0.onrender.com/new/generate-description",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, tags }),
+        }
+      );
 
-    const data = await response.json();
-
-    if (data.description) {
-      console.log("Generated description:", data.description);
-      setDescription(data.description);
-      setContent(data.description);
-    } else {
-      setError("No description returned.");
+      const data = await response.json();
+      if (data.description) {
+        setDescription(data.description);
+        setContent(data.description);
+      } else {
+        setError("No description returned.");
+      }
+    } catch (err) {
+      setError("Failed to connect to backend.");
     }
-  } catch (err) {
-    console.error(err);
-    setError("Failed to connect to backend.");
-  }
 
-  setLoading(false);
-};
-
+    setLoading(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,7 +80,10 @@ const generateDescription = async () => {
         imageUrl,
       };
 
-      await axios.post("https://blog-app-server-kgb0.onrender.com/post/newblog", blogData);
+      await axios.post(
+        "https://blog-app-server-kgb0.onrender.com/post/newblog",
+        blogData
+      );
 
       alert("Blog posted successfully!");
 
@@ -101,71 +101,81 @@ const generateDescription = async () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow mt-10">
-      <h2 className="text-2xl font-bold mb-5">Create New Blog</h2>
+    <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 mb-10 bg-white rounded-lg shadow mt-6 sm:mt-10">
+      <h2 className="text-xl sm:text-2xl font-bold mb-5 text-center">
+        Create New Blog
+      </h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Title */}
         <input
           type="text"
           placeholder="Blog Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-sm sm:text-base"
           required
         />
 
-        <input
-          type="text"
-          placeholder="Tags (comma separated)"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-
-        <button
-          type="button"
-          className="p-2 bg-blue-400 rounded-lg"
-          onClick={()=>generateDescription()}
-        >
-          {loading ? "Generating..." : "Generate Description"}
-        </button>
-
-        {/* {description && (
-          <textarea
-            className="w-full p-2 border rounded"
-            value={description}
-            readOnly
+        {/* Tags + Generate */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+          <input
+            type="text"
+            placeholder="Tags (comma separated)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="flex-1 p-2 border rounded text-sm sm:text-base"
           />
-        )} */}
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm sm:text-base"
+            onClick={generateDescription}
+          >
+            {loading ? "Generating..." : "Generate Description"}
+          </button>
+        </div>
 
+        {/* Visibility */}
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value)}
-          className="w-auto p-2 border rounded"
+          className="w-full sm:w-auto p-2 border rounded-lg text-sm sm:text-base"
         >
-          <option value="public">Public</option>
-          <option value="private">Private</option>
+          <option value="public" className=" rounded-md">Public</option>
+          <option value="private" className=" rounded-md">Private</option>
         </select>
 
-        <SimpleMDE value={content} onChange={setContent} />
+        {/* Markdown Editor */}
+        <SimpleMDE
+          value={content}
+          onChange={setContent}
+          className="text-sm sm:text-base"
+        />
 
+        {/* Image Upload */}
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="block mt-2"
+          className="block mt-2 text-sm sm:text-base"
         />
 
+        {/* Preview */}
         {preview && (
           <img
             src={preview}
             alt="Preview"
-            className="mt-3 w-full h-48 object-cover rounded"
+            className="mt-3 w-full h-48 sm:h-64 object-cover rounded-lg"
           />
         )}
 
+        {/* Error */}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+
+        {/* Submit */}
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded"
+          className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded transition text-sm sm:text-base"
         >
           Publish Blog
         </button>

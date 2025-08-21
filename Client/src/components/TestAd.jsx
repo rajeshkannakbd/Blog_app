@@ -5,7 +5,6 @@ const TestAd = () => {
   const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
-    // Load AdSense script if not already loaded
     const scriptId = "adsbygoogle-js";
     if (!document.getElementById(scriptId)) {
       const script = document.createElement("script");
@@ -21,37 +20,28 @@ const TestAd = () => {
       try {
         if (window.adsbygoogle && adRef.current) {
           window.adsbygoogle.push({});
-          setAdLoaded(true); // Assume ad was pushed
+          setAdLoaded(true);
         }
       } catch (e) {
         console.error("AdSense error:", e);
       }
-    }, 500); // Wait for DOM to settle
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div style={{ width: "100%", textAlign: "center", margin: "20px 0" }}>
+    <div className="w-full flex justify-center my-6 px-2">
       {!adLoaded && (
-        <div
-          style={{
-            height: "280px",
-            backgroundColor: "#f0f0f0",
-            color: "#888",
-            border: "1px dashed #ccc",
-            lineHeight: "280px",
-            fontSize: "16px",
-            margin:"20px"
-          }}
-        >
+        <div className="w-full h-40 sm:h-56 md:h-72 lg:h-80 flex items-center justify-center border border-dashed border-gray-400 bg-gray-100 text-gray-500 text-sm sm:text-base rounded-lg">
           [ Ad Placeholder – Waiting for AdSense ]
         </div>
       )}
+
       <ins
         ref={adRef}
-        className="adsbygoogle"
-        style={{ display: adLoaded ? "block" : "none", height: "280px" }}
+        className="adsbygoogle w-full h-40 sm:h-56 md:h-72 lg:h-80"
+        style={{ display: adLoaded ? "block" : "none" }}
         data-ad-client="ca-pub-1452228647540157"
         data-ad-slot="1460341116"
         data-ad-format="auto"

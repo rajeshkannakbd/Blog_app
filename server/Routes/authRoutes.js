@@ -35,8 +35,6 @@ router.post("/login",async(req,res)=>{
   }catch(err){
     res.status(500).json({message:"login failed",err})
   }
-  
-  
 })
 
 module.exports = router;

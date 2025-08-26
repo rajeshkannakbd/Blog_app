@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/auth/login",
+        "https://blog-app-server-kgb0.onrender.com/auth/login",
         { email, password }
       );
 

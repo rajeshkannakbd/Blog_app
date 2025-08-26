@@ -10,7 +10,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/user/blog/${storedUser._id}`
+          `https://blog-app-server-kgb0.onrender.com/user/blog/${storedUser._id}`
         );
         setUser(res.data);
         

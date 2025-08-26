@@ -17,7 +17,7 @@ const EditProfile = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/user/${storedUser._id}`
+          `https://blog-app-server-kgb0.onrender.com/user/${storedUser._id}`
         );
         setFormData({
           name: res.data.name || "",

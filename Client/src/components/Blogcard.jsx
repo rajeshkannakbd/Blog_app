@@ -74,83 +74,93 @@ const Blogcard = () => {
   if (blogs.length === 0) {
     return (
       <div className="text-center mt-10 text-gray-600">
-        <h1>No blogs available</h1>
+        <h1 className="text-lg font-semibold">No blogs available</h1>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 my-10 px-4 sm:px-6 md:px-12 lg:px-24">
-      {blogs.map((blog) => (
-        <div
-          key={blog._id}
-          className="relative bg-white shadow-md border border-gray-300 rounded-lg overflow-hidden flex flex-col"
-        >
-          {/* Title */}
-          <Link to={`/blog/${blog._id}`}>
-          <h1 className="text-lg sm:text-xl font-bold p-4 line-clamp-2">
-            {blog.title}
-          </h1></Link>
-
-          {/* Author & Date */}
-          <div className="flex justify-between px-4 text-gray-500 text-xs sm:text-sm">
-            <p>{capitalizeFirstLetter(blog.author?.name || "Unknown Author")}</p>
-            <p>
-              {new Date(blog.createdAt).toLocaleString([], {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
-            </p>
-          </div>
-
-          {/* Image */}
-          <img
-            src={blog.imageUrl || blogImage}
-            alt="blog"
-            className="h-48 w-full object-cover mt-4 mb-4 shadow-md"
-          />
-
-          {/* Content Preview */}
-          <p className="text-sm sm:text-base text-justify px-4 py-2 line-clamp-3 flex-grow">
-            {blog.content}
-          </p>
-
-          {/* Tags & Read More */}
-          <div className="flex flex-wrap gap-2 px-4 py-2">
-            {blog.tags?.split(",").map((tag, idx) => (
-              <span
-                key={idx}
-                className="border border-slate-400 px-2 py-1 rounded-md text-xs sm:text-sm"
-              >
-                {tag.trim()}
-              </span>
-            ))}
+    <div className="max-w-7xl mx-auto my-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-extrabold text-gray-800 mb-10 text-center">
+        Latest Blogs
+      </h1>
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {blogs.map((blog) => (
+          <div
+            key={blog._id}
+            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+          >
+            {/* Image */}
             <Link to={`/blog/${blog._id}`}>
-              <span className="border border-green-500 px-3 py-1 rounded-md text-green-600 hover:bg-green-600 hover:text-white transition text-xs sm:text-sm cursor-pointer">
-                Read More
-              </span>
+              <img
+                src={blog.imageUrl || blogImage}
+                alt="blog"
+                className="h-56 w-full object-cover"
+              />
             </Link>
-          </div>
 
-          {/* Footer */}
-          <div className="flex justify-between items-center px-4 py-3 border-t">
-            <button
-              onClick={() => toggleLike(blog._id)}
-              className="flex items-center gap-1 text-sm sm:text-base"
-            >
-              {blog.likedByUser ? (
-                <span className="text-red-500">❤️ Unlike</span>
-              ) : (
-                <span className="text-gray-600">🤍 Like</span>
-              )}
-              <span className="ml-1 text-gray-600">{blog.likeCount}</span>
-            </button>
-            <span className="text-xs sm:text-sm bg-gray-100 border px-2 py-1 rounded-full">
-              Save For Later
-            </span>
+            {/* Content */}
+            <div className="flex flex-col flex-grow p-5">
+              {/* Author & Date */}
+              <div className="flex items-center justify-between text-gray-500 text-xs mb-3">
+                <p className="flex items-center gap-2">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${blog.author?.name}&background=random`}
+                    alt="author"
+                    className="w-6 h-6 rounded-full"
+                  />
+                  {capitalizeFirstLetter(blog.author?.name || "Unknown")}
+                </p>
+                <p>
+                  {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+              </div>
+
+              {/* Title */}
+              <Link to={`/blog/${blog._id}`}>
+                <h2 className="text-lg font-semibold text-gray-900 hover:text-green-600 line-clamp-2">
+                  {blog.title}
+                </h2>
+              </Link>
+
+              {/* Preview */}
+              <p className="text-sm text-gray-600 mt-3 line-clamp-3 flex-grow">
+                {blog.content}
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mt-3">
+                {blog.tags?.split(",").map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-green-50 text-green-600 text-xs px-2 py-1 rounded-md border border-green-200"
+                  >
+                    #{tag.trim()}
+                  </span>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-between items-center mt-4 border-t pt-3">
+                <button
+                  onClick={() => toggleLike(blog._id)}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-red-500 transition"
+                >
+                  {blog.likedByUser ? "❤️ Unlike" : "🤍 Like"}{" "}
+                  <span className="text-gray-500">({blog.likeCount})</span>
+                </button>
+                <button className="text-xs sm:text-sm bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200 transition">
+                  📌 Save For Later
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

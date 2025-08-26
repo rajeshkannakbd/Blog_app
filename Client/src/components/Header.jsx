@@ -42,6 +42,7 @@ const Header = () => {
         <Link to="/"><h1>Home</h1></Link>
         <Link to="/create"><h1>Writer Dashboard</h1></Link>
         <Link to="/history"><h1>Blogs</h1></Link>
+        <Link to="/Profile"><h1>Profile</h1></Link>
         <Link to="/about"><h1>About</h1></Link>
       </nav>
 
@@ -79,6 +80,7 @@ const Header = () => {
           <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/create" onClick={() => setMenuOpen(false)}>Writer Dashboard</Link>
           <Link to="/history" onClick={() => setMenuOpen(false)}>Blogs</Link>
+          <Link to="/Profile" onClick={() => setMenuOpen(false)}>Profile</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
 
           {isAuthenticated ? (

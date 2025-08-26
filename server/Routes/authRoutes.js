@@ -18,23 +18,34 @@ router.post("/register",async(req,res)=>{
     res.status(500).json(err)
   }
 })
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "No user exists" });
+    }
 
-router.post("/login",async(req,res)=>{
-  try{
-  const {email , password} =req.body
-  const user = await UserModel.findOne({email})
-  if(!user){
-   return res.status(404).json({message:"no user exists"})
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+    
+    if (!user.firstLoginAt) {
+      user.firstLoginAt = new Date();
+      await user.save();
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      jwt_secret_key,
+      { expiresIn: "3h" }
+    );
+
+    res.status(200).json({ user, token });
+  } catch (err) {
+    res.status(500).json({ message: "Login failed", err });
   }
-  const ismatch = await bcrypt.compare(password,user.password)
-  if(!ismatch){
-   return res.status(401).json({message:"incoorect password"})
-  }
-  const token = jwt.sign({id:user._id,email:user.email},jwt_secret_key,{expiresIn:'3h'})
-  res.status(200).json({user:user,token:token})
-  }catch(err){
-    res.status(500).json({message:"login failed",err})
-  }
-})
+});
 
 module.exports = router;

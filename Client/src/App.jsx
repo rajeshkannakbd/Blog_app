@@ -14,6 +14,8 @@ import HistoryBlog from "./components/HistoryBlog";
 import EditHistory from "./components/EditHistory";
 import Search from "./components/Search";
 import About from "./components/About";
+import Profile from "./components/Profile";
+import EditProfile from "./components/Profile/EditProfile";
 
 export const authencationContext = createContext();
 function App() {
@@ -53,6 +55,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <WriteBlog />
+                </ProtectedRoute>
+              }
+            />
+              <Route
+              path="/Profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+              <Route
+              path="/editProfile"
+              element={
+                <ProtectedRoute>
+                  <EditProfile />
                 </ProtectedRoute>
               }
             />

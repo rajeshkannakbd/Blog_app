@@ -6,6 +6,7 @@ const postRoutes = require('./Routes/postRoutes');
 const authRoutes = require("./Routes/authRoutes");
 const adminRoutes = require("./Routes/adminRoutes");
 const description = require("./Routes/generateDescriptionRoute")
+const userRoutes = require("./Routes/userRoutes") 
 const {axios} = require("axios");
 
 
@@ -22,6 +23,7 @@ app.use("/post",postRoutes)
 app.use("/auth",authRoutes)
 app.use("/admin",adminRoutes)
 app.use("/new",description)
+app.use("/user",userRoutes)
 
 connectdb();
 

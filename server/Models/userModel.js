@@ -9,7 +9,9 @@ const UserSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
-});
+  bio: { type: String, default: "" },
+  firstLoginAt: { type: Date, default: null },
+},{ timestamps: true });
 
 const UserModel = mongoose.model("User", UserSchema);
 
